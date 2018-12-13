@@ -1,0 +1,305 @@
+#+STARTUP:  hidestars
+
+* _Package-Archive_
+---------------------------------------------------------------------------
+** melpa
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+#+END_SRC
+* _Functions_
+** StartupView
+#+BEGIN_SRC emacs-lisp
+  (defun startupView()
+  "Basic Window Setting"
+  (interactive)
+  (delete-other-windows)
+
+  (find-file "~/Nextcloud/_Notebook/Notes/Center.org")
+  (split-window-right)
+  (other-window 1)
+  (org-agenda-list)
+  (other-window 1)
+  (split-window-below)
+  (other-window 1)
+  (find-file "~/Nextcloud/_Notebook/Notes/Notizen.org")
+  )
+#+END_SRC
+** 3DocView
+#+BEGIN_SRC emacs-lisp
+(defun ThreeDocView()
+  "Split windows my way."
+  (interactive)
+  (delete-other-windows)
+  (split-window-below)
+  (other-window 1)
+  (split-window-right 90)
+  (other-window 1)
+  (other-window 1))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;(defun three-doc-view ()
+;  "Split Window in 3 Areas"
+;  (interactive)
+;  (split-window-right 80)
+;  
+;  (split-window-below)
+#+END_SRC
+         
+** 4DocView
+#+BEGIN_SRC emacs-lisp
+(defun FourDocView()
+  "Split windows my way."
+  (interactive)
+  (delete-other-windows)
+  (split-window-right 60)
+  (other-window 1)
+  (split-window-right 70)
+  (other-window -1)
+  (split-window-below))
+#+END_SRC
+
+* _Key Bindings_
+** Description
+- Fill with Content of upper recognized line
+- Delete Word left of Position
+- Undo
+- Open Bookmarks
+- Switch Buffer Ace-Window
+- Revert Buffer
+- Shell Command
+- Org Shortcuts
+** Code 
+#+BEGIN_SRC emacs-lisp
+; Global
+(global-set-key (kbd "C-?") 'hippie-expand)
+(global-set-key (kbd "C-x C-m") 'bookmark-jump)
+(global-set-key (kbd "C-x .") 'eshell)
+(global-set-key (kbd "C-x d") 'dired-other-window)
+(global-set-key (kbd "M-o") 'other-window)
+
+; Own Function
+(global-set-key (kbd "M-n") 'startupView)
+
+; Org Mode
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-switchb)
+(global-set-key "\C-c C-x r" 'org-redisplay-inline-images)
+#+END_SRC
+* _Themes_
+---------------------------------------------------------------------------
+** Loaded Theme
+#+BEGIN_SRC emacs-lisp
+(set-background-color "#4b4b4b")
+(set-face-attribute 'region nil :background "#8c7117")
+(set-face-attribute 'highlight nil :background "#cc5800")
+(set-face-attribute 'cursor nil :background "gainsboro")
+(set-face-foreground 'mode-line "#ffffff")
+(set-face-background 'mode-line "#080808")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "green"))))
+ '(org-level-1 ((t (:inherit outline-8 :height 1.3))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+ '(org-todo ((t (:foreground "snow" :weight bold)))))
+#+END_SRC
+* _Variablen fuer Modi_
+---------------------------------------------------------------------------
+#+BEGIN_SRC emacs-lisp
+    (server-start) ;Start Emacs as Server
+    (menu-bar-mode -1) ; No Menuebar
+    (tool-bar-mode -1) ; No Toolbar
+    (scroll-bar-mode -1) ;No Scrollbar
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;Start Maximized
+    (setq inhibit-splash-screen t) ; No Welcome Screen
+    (setq make-backup-files nil) ; No Backupfiles Saved
+    (global-linum-mode 1) ; Show Line Numbers
+    (defalias 'yes-or-no-p 'y-or-n-p) ; y/p instead of Yes/No
+    (setq column-number-mode t) ; Show Column Number
+    (global-hl-line-mode 1) ;Current Line Highlighted 
+    (electric-pair-mode 1) ; Writes Open and Closed Parantheses at Input
+    (show-paren-mode 1) ; Show Parentheses - Pair
+    (savehist-mode 1) ; Saving Minibuffer History
+    (add-hook 'after-init-hook 'org-agenda-list) ; Start Org Agenda Preloading Files
+    ;; Org Capture Templates
+    (setq org-capture-templates
+    '(
+    ("n" "Take a Note" entry (file+headline "~/Nextcloud/_Notebook/Notes/Notizen.org" "_FreeNote_")"* %T %? ")
+    ("t" "ToDo Entry" entry (file+headline "~/Dropbox/Files/ToDo.org" "_Capture Tasks_")"* TODO %? ")
+    ("s" "ToDo Entry Studium" entry (file+headline "~/Dropbox/Files/StudyGTD.org" "_Capture Tasks_")"* TODO %? ")
+    ("S" "Note Studium" entry (file+headline "~/Dropbox/Files/StudyGTD.org" "_Capture Notes_")"* %T %? ")
+    ("m" "Highlighted Text" entry (file+headline"~/Nextcloud/_Notebook/Notes/Notizen.org" "_CopyNote_")"* %T  %f  %i")
+
+    ("W" "Work Note" entry (file+headline"~/Dropbox/Files/Arbeit.org" "_Generell_")"* %T  %i %? ")
+    ("H" "Hardi Note" entry (file+headline"~/Dropbox/Files/Notes/Arbeit.org" "_HARDI_")"* %T  %i %? ")
+    ("B" "RH850 Basis Note" entry (file+headline"~/Dropbox/Files/Arbeit.org" "_Basissoftware_")"* %T  %i %? ")
+
+    ("w" "Work - TODO" entry (file+headline"~/Dropbox/Files/Arbeit.org" "_Generell-TODO_")"* TODO %? ")
+    ("h" "HARDI - TODO" entry (file+headline"~/Dropbox/Files/Arbeit.org" "_HARDI-TODO_")"* TODO %? ")
+    ("b" "Basis - TODO" entry (file+headline"~/Dropbox/Files/Arbeit.org" "_Basis-TODO_")"* TODO %? ")
+    ))
+    ;;-----------------------------------------------------------------------------------------------------------
+    ;;-----------------------------------------------------------------------------------------------------------
+
+    (setq org-log-done 'time) ; Log Time If Task is Done 
+    (setq org-image-actual-width nil) ; Org Mode Dont show Inline Images in Actual Width
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANCELLED(c)"))) ; TODO Words Org Mode
+    ;; Makes *scratch* empty.
+    (setq initial-scratch-message nil)
+    ;; Removes *scratch* from buffer after the mode has been set.
+    (defun remove-scratch-buffer ()
+      (if (get-buffer "*scratch*")
+          (kill-buffer "*scratch*")))
+    (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+    ;; Removes *messages* from the buffer.
+    (setq-default message-log-max nil)
+    (kill-buffer "*Messages*")
+    ;; Removes *Completions* from buffer after you've opened a file.
+    (add-hook 'minibuffer-exit-hook
+          '(lambda ()
+             (let ((buffer "*Completions*"))
+               (and (get-buffer buffer)
+                    (kill-buffer buffer)))))
+
+    (add-hook 'dired-mode-hook 'dired-hide-details-mode) ; Hide Details in Dired
+    (plist-put org-format-latex-options :scale 2.0) ; Latex Figures in Org Mode bigger
+    (setq org-agenda-window-setup 'current-window) ; Start org agenda view in current window
+    (startupView) ; Starting in Own Coded View
+    (prefer-coding-system 'utf-8) ; Encoding with UTF8
+#+END_SRC
+
+** Winner Mode (outcommented)
+*** Description
+Toggle Modes with C-c left/rigth
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(winner-mode 1)
+#+END_SRC
+    
+* _Installierte Packete_
+--------------------------------------------------------------------------- 
+** Use-Package
+*** Code
+#+BEGIN_SRC emacs-lisp
+(eval-when-compile  
+(require 'use-package))
+#+END_SRC
+** Helm (outcommented)
+*** Descripton
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package helm
+;:ensure t)
+;(global-set-key (kbd "M-x") 'helm-M-x)
+#+END_SRC
+** Yasnippet
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+:ensure t)
+(yas-global-mode 1)
+(add-to-list 'yas-snippet-dirs "~/Nextcloud/_Notebook/Rechner/Software/Tools/Emacs/snippets")
+(setq yas-snippet-dirs '("~/Nextcloud/_Notebook/Rechner/Software/Tools/Emacs/snippets"))
+(yas-reload-all 1)
+
+#+END_SRC
+** Iedit (outcommented)
+*** Description
+Change Content Simultaniously in Files 
+[[https://www.emacswiki.org/emacs/Iedit][Iedit Emacs Wiki]]
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package iedit
+;:ensure t)
+#+END_SRC
+** Ivy
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package ivy
+;  :ensure t)
+(use-package swiper
+:ensure t)
+(use-package counsel
+:ensure t)
+;(ivy-mode 1)
+;(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(global-set-key "\C-s" 'swiper)
+;(global-set-key (kbd "C-c C-r") 'ivy-resume)
+;(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x M-f") 'counsel-find-file-extern)
+;(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+;(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+;(global-set-key (kbd "<f1> l") 'counsel-find-library)
+;(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+;(global-set-key (kbd "C-c g") 'counsel-git)
+;(global-set-key (kbd "C-c j") 'counsel-git-grep)
+;(global-set-key (kbd "C-c k") 'counsel-ag)
+;(global-set-key (kbd "C-x l") 'counsel-locate)
+;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+;(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+#+END_SRC
+** HTMLize (outcommented)
+#+BEGIN_SRC emacs-lisp
+;(use-package htmlize
+;:ensure t)
+#+END_SRC
+
+** CMake Major Mode (outcommented)
+*** Descripton
+Handling CMakeLists.txt Files
+*** Code
+#+BEGIN_SRC emacs-lisp
+
+;(use-package cmake-mode
+;:ensure t)
+;(setq load-path (cons (expand-file-name "~/.emacs.d/elisp./cmake-mode-20180709.1426") load-path))
+#+END_SRC
+** Dashboard (outcommented)
+*** Description
+Dashboard at emacs Startup
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package dashboard
+;:ensure t)
+;(dashboard-setup-startup-hook)
+;(setq dashboard-items '((recents . 3)
+;                         (bookmarks . 10)))
+;(add-to-list 'dashboard-items '(agenda) t)
+#+END_SRC
+** E2WM - Window Manager (outcommented)
+*** Descripton
+[[https://github.com/kiwanami/emacs-window-manager][GitHub Page]]
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package e2wm
+;:ensure t)
+;(global-set-key (kbd "M-+") 'e2wm:start-management)
+#+END_SRC
+
+** Ace-Window (outcommented)
+*** Code
+#+BEGIN_SRC emacs-lisp
+;(use-package ace-window
+;:ensure t)
+;(global-set-key (kbd "C-x TAB") 'ace-window)
+#+END_SRC
+
+** Projectile
+*** Code
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+:ensure t)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-enable-caching nil)
+#+END_SRC
