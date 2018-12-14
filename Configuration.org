@@ -190,12 +190,12 @@ Toggle Modes with C-c left/rigth
 (eval-when-compile  
 (require 'use-package))
 #+END_SRC
-** Helm (outcommented)
+** Helm
 *** Descripton
 *** Code
 #+BEGIN_SRC emacs-lisp
-;(use-package helm
-;:ensure t)
+(use-package helm
+:ensure t)
 ;(global-set-key (kbd "M-x") 'helm-M-x)
 #+END_SRC
 ** Yasnippet
@@ -217,22 +217,19 @@ Change Content Simultaniously in Files
 ;(use-package iedit
 ;:ensure t)
 #+END_SRC
-** Ivy
+** Swiper
 *** Code
 #+BEGIN_SRC emacs-lisp
-;(use-package ivy
-;  :ensure t)
 (use-package swiper
 :ensure t)
+(global-set-key "\C-s" 'swiper)
+#+END_SRC
+** Counsel
+*** Code
+#+BEGIN_SRC emacs-lisp
 (use-package counsel
 :ensure t)
-;(ivy-mode 1)
-;(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
-;(global-set-key (kbd "C-c C-r") 'ivy-resume)
-;(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
+;(global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "C-x M-f") 'counsel-find-file-extern)
 ;(global-set-key (kbd "<f1> f") 'counsel-describe-function)
@@ -246,14 +243,27 @@ Change Content Simultaniously in Files
 ;(global-set-key (kbd "C-x l") 'counsel-locate)
 ;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 ;(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-
 #+END_SRC
-** HTMLize (outcommented)
+
+** Ivy
+*** Code
 #+BEGIN_SRC emacs-lisp
-;(use-package htmlize
-;:ensure t)
-#+END_SRC
+;(use-package ivy
+;  :ensure t)
+;(ivy-mode 1)
+;(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+;(global-set-key (kbd "C-c C-r") 'ivy-resume)
+;(global-set-key (kbd "<f6>") 'ivy-resume)
 
+
+#+END_SRC
+** HTMLize
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+:ensure t)
+#+END_SRC
+   
 ** CMake Major Mode (outcommented)
 *** Descripton
 Handling CMakeLists.txt Files
